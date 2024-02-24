@@ -13,6 +13,8 @@ using Volo.Abp.PermissionManagement.Identity;
 using Volo.Abp.PermissionManagement.OpenIddict;
 using Volo.Abp.SettingManagement;
 using Volo.Abp.TenantManagement;
+using Acme.Store.Tables;
+using FluentValidation;
 
 namespace Acme.Store;
 
@@ -41,5 +43,8 @@ public class StoreDomainModule : AbpModule
 #if DEBUG
         context.Services.Replace(ServiceDescriptor.Singleton<IEmailSender, NullEmailSender>());
 #endif
+        context.Services.AddTransient(typeof(AbstractValidator<Product>), typeof(ProductValidator));
+        context.Services.AddTransient(typeof(AbstractValidator<Order>), typeof(OrderValidator));
+
     }
 }

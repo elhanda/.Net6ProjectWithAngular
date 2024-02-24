@@ -3,6 +3,7 @@ using System.IO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace Acme.Store.EntityFrameworkCore;
 
@@ -15,9 +16,15 @@ public class StoreDbContextFactory : IDesignTimeDbContextFactory<StoreDbContext>
         StoreEfCoreEntityExtensionMappings.Configure();
 
         var configuration = BuildConfiguration();
+ 
 
-        var builder = new DbContextOptionsBuilder<StoreDbContext>()
-            .UseSqlServer(configuration.GetConnectionString("Default"));
+                var builder = new DbContextOptionsBuilder<StoreDbContext>().UseSqlServer(configuration.GetConnectionString("Default"),
+                                sqlServerOptions =>
+                                {
+                                    sqlServerOptions.EnableRetryOnFailure();
+                                });
+
+
 
         return new StoreDbContext(builder.Options);
     }

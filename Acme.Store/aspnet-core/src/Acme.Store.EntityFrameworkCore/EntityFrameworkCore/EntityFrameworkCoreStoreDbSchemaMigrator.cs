@@ -20,15 +20,19 @@ public class EntityFrameworkCoreStoreDbSchemaMigrator
 
     public async Task MigrateAsync()
     {
-        /* We intentionally resolving the StoreDbContext
-         * from IServiceProvider (instead of directly injecting it)
-         * to properly get the connection string of the current tenant in the
-         * current scope.
-         */
 
         await _serviceProvider
-            .GetRequiredService<StoreDbContext>()
-            .Database
-            .MigrateAsync();
+           .GetRequiredService<StoreDbContext>()
+           .Database
+           .MigrateAsync();
+
+        var dbContext = _serviceProvider.GetRequiredService<StoreDbContext>();
+        await dbContext.Database.MigrateAsync();
+
+        await _serviceProvider.GetRequiredService<StoreDbContext>().Database.MigrateAsync();
+
+
+
+
     }
 }

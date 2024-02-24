@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Acme.Store.Tables;
+using Microsoft.EntityFrameworkCore;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.Data;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.EntityFrameworkCore;
+using Volo.Abp.EntityFrameworkCore.Modeling;
 using Volo.Abp.FeatureManagement.EntityFrameworkCore;
 using Volo.Abp.Identity;
 using Volo.Abp.Identity.EntityFrameworkCore;
@@ -52,6 +54,11 @@ public class StoreDbContext :
 
     #endregion
 
+    public DbSet<Product> Product { get; set; }
+    public DbSet<Order> Order { get; set; }
+    public DbSet<OrderItem> OrderItem { get; set; }
+    public DbSet<Customer> Customer { get; set; }
+
     public StoreDbContext(DbContextOptions<StoreDbContext> options)
         : base(options)
     {
@@ -81,5 +88,44 @@ public class StoreDbContext :
         //    b.ConfigureByConvention(); //auto configure for the base class props
         //    //...
         //});
+        builder.Entity<Product>(b =>
+        {
+            b.ToTable(StoreConsts.DbTablePrefix + "Product",
+                StoreConsts.DbSchema);
+            b.ConfigureByConvention(); //auto configure for the base class props
+            b.Property(x => x.Name).IsRequired().HasMaxLength(128);
+            b.Property(x => x.Description).HasMaxLength(500);
+            ;
+        });
+        builder.Entity<Order>(b =>
+        {
+            b.ToTable(StoreConsts.DbTablePrefix + "Order",
+                StoreConsts.DbSchema);
+            b.ConfigureByConvention(); //auto configure for the base class props
+            b.Property(x => x.OrderDate).IsRequired();
+            b.HasOne<Customer>().WithMany().HasForeignKey(x => x.CustomerId).IsRequired();
+
+            b.Property(x => x.TotalAmount).IsRequired();
+        });
+        builder.Entity<OrderItem>(b =>
+        {
+            b.ToTable(StoreConsts.DbTablePrefix + "OrderItem",
+                StoreConsts.DbSchema);
+            b.ConfigureByConvention(); //auto configure for the base class props
+            b.HasOne<Product>().WithMany().HasForeignKey(x => x.ProductId).IsRequired();
+            b.Property(x => x.Quantity).IsRequired();
+            b.Property(x => x.Price).IsRequired();
+
+
+        });
+        builder.Entity<Customer>(b =>
+        {
+            b.ToTable(StoreConsts.DbTablePrefix + "Customer",
+                StoreConsts.DbSchema);
+            b.ConfigureByConvention(); //auto configure for the base class props
+            b.Property(x => x.Name).IsRequired().HasMaxLength(128);
+            b.Property(x => x.Email).IsRequired().HasMaxLength(128);
+
+        });
     }
 }
