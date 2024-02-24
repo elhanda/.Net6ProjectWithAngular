@@ -10,7 +10,7 @@ export const environment = {
     logoUrl: '',
   },
   oAuthConfig: {
-    issuer: 'https://localhost:44393/',
+    issuer: 'https://localhost:49159/',
     redirectUri: baseUrl,
     clientId: 'Store_App',
     responseType: 'code',
@@ -19,7 +19,7 @@ export const environment = {
   },
   apis: {
     default: {
-      url: 'https://localhost:44393',
+      url: 'https://localhost:49159',
       rootNamespace: 'Acme.Store',
     },
   },
