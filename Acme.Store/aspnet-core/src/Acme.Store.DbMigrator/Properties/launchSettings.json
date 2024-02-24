@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Acme.Store.DbMigrator": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}

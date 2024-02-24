@@ -1,0 +1,41 @@
+version: '3.4'
+
+services:
+  localhost:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment: 
+        ACCEPT_EULA: "Y"
+        SA_PASSWORD: "StrongPassword123"
+
+    ports: 
+        - "1433:1433"
+  acme.store.httpapi.host:
+    image: ${DOCKER_REGISTRY-}acmestorehttpapihost
+    build:
+      context: .
+      dockerfile: src/Acme.Store.HttpApi.Host/Dockerfile
+    ports: 
+    - "44393:80"
+    depends_on: 
+            - localhost
+    environment: 
+            ServerName: "localhost"
+            Database: "Store"
+            UserName: "SA"
+            Password: "StrongPassword123"
+
+  acme.store.dbmigrator:
+    image: ${DOCKER_REGISTRY-}acmestoredbmigrator
+    build:
+      context: .
+      dockerfile: src/Acme.Store.DbMigrator/Dockerfile
+    depends_on: 
+        - localhost
+    environment: 
+            ServerName: "localhost"
+            Database: "Store"
+            UserName: "SA"
+            Password: "StrongPassword123"
+    ports: 
+    - "44393:80"
+
