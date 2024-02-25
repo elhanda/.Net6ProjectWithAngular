@@ -10,6 +10,7 @@ namespace Acme.Store.Tables.Orders
         public Guid? TenantId { get; set; } //Defined by the IMultiTenant interface
 
         public Guid CustomerId { get; set; }
+        public string CustomerName { get; set; }
         public DateTime OrderDate { get; set; }
         public double TotalAmount { get; set; }
     }

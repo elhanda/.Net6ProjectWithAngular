@@ -19,10 +19,12 @@ public class StoreApplicationAutoMapperProfile : Profile
         CreateMap<Product, ProductDto>();
          CreateMap<CreateUpdateProductDto, Product>();
         CreateMap<ProductLookupDto, Product>();
+        CreateMap<Product, ProductLookupDto>();
 
         CreateMap<Order, OrderDto>();
          CreateMap<CreateUpdateOrderDto, Order>();
         CreateMap<OrderLookupDto, Order>();
+        CreateMap<Order, OrderLookupDto>();
 
         CreateMap<OrderItem, OrderItemDto>();
          CreateMap<CreateUpdateOrderItemDto, OrderItem>();
@@ -30,6 +32,7 @@ public class StoreApplicationAutoMapperProfile : Profile
         CreateMap<Customer, CustomerDto>();
          CreateMap<CreateUpdateCustomerDto, Customer>();
         CreateMap<CustomerLookUpDto, Customer>();
+        CreateMap<Customer,CustomerLookUpDto >();
 
 
     }

@@ -9,6 +9,7 @@ export interface CreateUpdateOrderDto {
 export interface OrderDto extends AuditedEntityDto<string> {
   tenantId?: string;
   customerId?: string;
+  customerName?: string;
   orderDate?: string;
   totalAmount: number;
 }
