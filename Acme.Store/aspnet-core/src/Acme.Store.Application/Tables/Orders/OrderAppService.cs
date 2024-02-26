@@ -65,7 +65,7 @@
             //Prepare a query to join books and authors
             var query = from Order in queryable
                         join product in await _CustomerRepository.GetQueryableAsync() on Order.CustomerId equals product.Id
-                        select new { Order, product };
+                        select new { Order, product =product.Name };
 
             //Paging
             query = query
@@ -79,7 +79,7 @@
             var bookDtos = queryResult.Select(x =>
             {
                 var bookDto = ObjectMapper.Map<Order, OrderDto>(x.Order);
-                bookDto.CustomerName = x.product.Name;
+                bookDto.CustomerName = x.product;
                 return bookDto;
             }).ToList();
 
